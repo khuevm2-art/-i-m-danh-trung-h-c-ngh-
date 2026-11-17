@@ -1,0 +1,150 @@
+{
+  "entities": {
+    "ClassRoom": {
+      "title": "ClassRoom",
+      "description": "Metadata for an academic class roll-call workspace such as 10EC01.",
+      "type": "object",
+      "properties": {
+        "className": { "type": "string", "minLength": 1, "maxLength": 32 },
+        "academicYear": { "type": "string", "minLength": 1, "maxLength": 32 },
+        "ownerUid": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["className", "academicYear", "ownerUid", "createdAt", "updatedAt"]
+    },
+    "StudentRecord": {
+      "title": "StudentRecord",
+      "description": "A student enrolled in the class roster.",
+      "type": "object",
+      "properties": {
+        "stt": { "type": "number" },
+        "id": { "type": "string", "minLength": 1, "maxLength": 32, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "fullName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "note": { "type": "string", "maxLength": 300 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["stt", "id", "fullName", "updatedAt"]
+    },
+    "SubjectItem": {
+      "title": "SubjectItem",
+      "description": "A course/subject taught in the class along with its course code and assigned lecturer.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "code": { "type": "string", "minLength": 1, "maxLength": 32 },
+        "officialName": { "type": "string", "maxLength": 150 },
+        "teacher": { "type": "string", "maxLength": 80 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "code", "updatedAt"]
+    },
+    "DailySchedule": {
+      "title": "DailySchedule",
+      "description": "Scheduled subjects for periods Tiết 1 through Tiết 5 on a specific date.",
+      "type": "object",
+      "properties": {
+        "date": { "type": "string", "minLength": 10, "maxLength": 10, "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+        "periods": { "type": "object" },
+        "updatedByUid": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "updatedByName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["date", "periods", "updatedByUid", "updatedByName", "updatedAt"]
+    },
+    "AttendanceSession": {
+      "title": "AttendanceSession",
+      "description": "Attendance marks for a single class period/session recorded online by a lecturer.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "className": { "type": "string", "minLength": 1, "maxLength": 32 },
+        "subjectId": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "date": { "type": "string", "minLength": 10, "maxLength": 10, "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+        "period": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "topic": { "type": "string", "maxLength": 250 },
+        "records": { "type": "object" },
+        "recordedByUid": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "recordedByName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "recordedByEmail": { "type": "string", "minLength": 3, "maxLength": 160 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "id",
+        "className",
+        "subjectId",
+        "date",
+        "period",
+        "records",
+        "recordedByUid",
+        "recordedByName",
+        "recordedByEmail",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Authenticated lecturer or administrator account profile and access status.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "email": { "type": "string", "minLength": 3, "maxLength": 160 },
+        "displayName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "teacherCode": { "type": "string", "maxLength": 64 },
+        "role": { "type": "string", "enum": ["admin", "teacher"] },
+        "status": { "type": "string", "enum": ["pending", "approved", "disabled"] },
+        "assignedSubjectIds": { "type": "array" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "displayName", "role", "status", "assignedSubjectIds", "createdAt", "updatedAt"]
+    },
+    "TeacherInvite": {
+      "title": "TeacherInvite",
+      "description": "Pre-authorized lecturer email record managed by administrators.",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "minLength": 3, "maxLength": 160 },
+        "displayName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "teacherCode": { "type": "string", "maxLength": 64 },
+        "assignedSubjectIds": { "type": "array" },
+        "createdByUid": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email", "displayName", "assignedSubjectIds", "createdByUid", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Lecturer and admin user profiles with PII isolation."
+    },
+    "/teacherInvites/{inviteId}": {
+      "schema": { "$ref": "#/entities/TeacherInvite" },
+      "description": "Pre-approved lecturer invitations keyed by safe email identifier."
+    },
+    "/classes/{classId}": {
+      "schema": { "$ref": "#/entities/ClassRoom" },
+      "description": "Classrooms managed in the online attendance system."
+    },
+    "/classes/{classId}/students/{studentId}": {
+      "schema": { "$ref": "#/entities/StudentRecord" },
+      "description": "Students belonging to the classroom."
+    },
+    "/classes/{classId}/subjects/{subjectId}": {
+      "schema": { "$ref": "#/entities/SubjectItem" },
+      "description": "Subjects and assigned teacher metadata for the classroom."
+    },
+    "/classes/{classId}/schedule/{dateId}": {
+      "schema": { "$ref": "#/entities/DailySchedule" },
+      "description": "Daily 5-period timetable mapping for the classroom."
+    },
+    "/classes/{classId}/sessions/{sessionId}": {
+      "schema": { "$ref": "#/entities/AttendanceSession" },
+      "description": "Per-period online attendance records."
+    }
+  }
+}

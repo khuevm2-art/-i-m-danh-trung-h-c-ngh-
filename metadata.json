@@ -1,0 +1,6 @@
+{
+  "name": "Quản Lý Điểm Danh 10EC01",
+  "description": "Phần mềm quản lý điểm danh học sinh lớp 10EC01 theo từng môn học, lịch sử chuyên cần và báo cáo xuất CSV.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
